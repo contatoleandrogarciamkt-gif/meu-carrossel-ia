@@ -27,9 +27,9 @@ const templates = [
   },
   {
     id: 'premium' as const,
-    name: 'Conteúdo Premium',
-    description: 'Elegante, degradê escuro e dourado',
-    preview: 'bg-premium-dark border-premium-gold'
+    name: 'Estratégia YouTube',
+    description: 'Moderno, azul escuro e amarelo (Curiosidade)',
+    preview: 'bg-white border-blue-900 shadow-sm'
   }
 ];
 

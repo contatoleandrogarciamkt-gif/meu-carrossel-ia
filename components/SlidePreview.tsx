@@ -2,6 +2,7 @@ import React from 'react';
 import { SlideContent, DesignTemplate, CarouselFormat } from '@/types/carousel';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import * as LucideIcons from 'lucide-react';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,6 +16,11 @@ interface SlidePreviewProps {
 }
 
 export default function SlidePreview({ slide, design, format, id }: SlidePreviewProps) {
+  // Dynamic Icon Helper
+  const IconComponent = (slide.iconName && (LucideIcons as any)[slide.iconName]) 
+    ? (LucideIcons as any)[slide.iconName] 
+    : LucideIcons.Sparkles;
+
   const getAspectRatio = () => {
     switch (format) {
       case '4:5': return 'aspect-[4/5]';
@@ -36,15 +42,20 @@ export default function SlidePreview({ slide, design, format, id }: SlidePreview
             <div className="absolute top-0 right-0 w-32 h-32 bg-alert-yellow/10 -mr-16 -mt-16 rotate-45" />
           )
         };
-      case 'premium':
+      case 'premium': // Now "Estratégia YouTube"
         return {
-          container: 'bg-gradient-premium text-white p-12 flex flex-col justify-between relative border border-premium-gold/20 shadow-inner',
-          headline: 'text-4xl md:text-5xl font-serif font-bold italic tracking-tight text-premium-gold leading-tight',
-          support: 'text-lg font-light text-slate-400 italic',
-          number: 'border border-premium-gold text-premium-gold w-10 h-10 flex items-center justify-center rounded-full font-serif',
-          footer: 'text-premium-gold/60 text-sm flex justify-between items-center font-medium tracking-widest uppercase',
+          container: 'bg-[#F8FAFC] text-slate-900 p-10 flex flex-col justify-between relative overflow-hidden',
+          headline: 'text-4xl md:text-5xl font-black tracking-tight text-[#1E3A8A] leading-[1.1]',
+          support: 'text-xl font-bold text-slate-600 bg-yellow-400/20 px-2 py-1 rounded-lg inline-block',
+          number: 'bg-[#1E3A8A] text-yellow-400 w-12 h-12 flex items-center justify-center rounded-2xl font-black text-xl shadow-lg',
+          footer: 'text-[#1E3A8A] font-black flex justify-between items-center border-t-4 border-yellow-400 pt-6',
           accents: (
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-premium-gold/50 to-transparent" />
+            <>
+              <div className="absolute top-10 right-10 text-yellow-400/20 scale-[5] -rotate-12">
+                <IconComponent size={40} />
+              </div>
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#1E3A8A]/5 rounded-full" />
+            </>
           )
         };
       default: // clean
@@ -74,19 +85,24 @@ export default function SlidePreview({ slide, design, format, id }: SlidePreview
     >
       {styles.accents}
       
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start z-10">
         <div className={styles.number}>{slide.number}</div>
-        <div className="text-[10px] uppercase tracking-[0.2em] opacity-50 font-bold">
-          {slide.type}
+        <div className="flex flex-col items-end">
+           <div className="text-[10px] uppercase tracking-[0.2em] opacity-50 font-bold mb-1">
+            {slide.type}
+          </div>
+          <IconComponent size={24} className={design === 'premium' ? 'text-yellow-500' : ''} />
         </div>
       </div>
 
-      <div className="space-y-6 flex-1 flex flex-col justify-center">
+      <div className="space-y-6 flex-1 flex flex-col justify-center z-10">
         <h2 className={styles.headline}>{slide.headline}</h2>
-        <p className={styles.support}>{slide.supportText}</p>
+        <div className="flex">
+          <p className={styles.support}>{slide.supportText}</p>
+        </div>
       </div>
 
-      <div className={styles.footer}>
+      <div className={cn(styles.footer, "z-10")}>
         <span>Canal Quero Viajar</span>
         <span className="text-[10px] opacity-70">Assista ao vídeo completo</span>
       </div>
