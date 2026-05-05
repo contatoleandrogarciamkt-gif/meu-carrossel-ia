@@ -7,6 +7,7 @@ export interface SlideContent {
   headline: string;
   supportText: string;
   type: string;
+  iconName?: string;
 }
 
 export interface CarouselData {
