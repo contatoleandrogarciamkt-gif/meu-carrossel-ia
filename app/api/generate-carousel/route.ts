@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       .replace('{slidesCount}', slidesCount.toString()); // Replaced twice in prompt
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-5",
       messages: [
         { role: "system", content: "Você é um gerador de conteúdo estruturado em JSON." },
         { role: "user", content: prompt }
