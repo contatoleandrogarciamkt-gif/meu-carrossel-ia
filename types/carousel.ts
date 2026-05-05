@@ -8,6 +8,8 @@ export interface SlideContent {
   supportText: string;
   type: string;
   iconName?: string;
+  imageUrl?: string;
+  imagePrompt?: string;
 }
 
 export interface CarouselData {
