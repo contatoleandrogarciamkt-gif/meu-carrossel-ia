@@ -78,31 +78,42 @@ export default function SlidePreview({ slide, design, format, id }: SlidePreview
     <div 
       id={id}
       className={cn(
-        "w-full shadow-2xl relative select-none", 
+        "w-full shadow-2xl relative select-none overflow-hidden", 
         getAspectRatio(),
         styles.container
       )}
+      style={slide.imageUrl ? { 
+        backgroundImage: `url(${slide.imageUrl})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center',
+        color: 'white' // Force white text when image is present
+      } : {}}
     >
+      {/* Background Overlay for readability */}
+      {slide.imageUrl && (
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80 z-0" />
+      )}
+
       {styles.accents}
       
       <div className="flex justify-between items-start z-10">
         <div className={styles.number}>{slide.number}</div>
         <div className="flex flex-col items-end">
-           <div className="text-[10px] uppercase tracking-[0.2em] opacity-50 font-bold mb-1">
+           <div className={cn("text-[10px] uppercase tracking-[0.2em] font-bold mb-1", slide.imageUrl ? "text-white/70" : "opacity-50")}>
             {slide.type}
           </div>
-          <IconComponent size={24} className={design === 'premium' ? 'text-yellow-500' : ''} />
+          <IconComponent size={24} className={slide.imageUrl ? 'text-white' : (design === 'premium' ? 'text-yellow-500' : '')} />
         </div>
       </div>
 
       <div className="space-y-6 flex-1 flex flex-col justify-center z-10">
-        <h2 className={styles.headline}>{slide.headline}</h2>
+        <h2 className={cn(styles.headline, slide.imageUrl && "text-white drop-shadow-lg")}>{slide.headline}</h2>
         <div className="flex">
-          <p className={styles.support}>{slide.supportText}</p>
+          <p className={cn(styles.support, slide.imageUrl && "text-white/90 bg-black/40 backdrop-blur-sm")}>{slide.supportText}</p>
         </div>
       </div>
 
-      <div className={cn(styles.footer, "z-10")}>
+      <div className={cn(styles.footer, "z-10", slide.imageUrl && "text-white border-white/30")}>
         <span>Canal Quero Viajar</span>
         <span className="text-[10px] opacity-70">Assista ao vídeo completo</span>
       </div>
