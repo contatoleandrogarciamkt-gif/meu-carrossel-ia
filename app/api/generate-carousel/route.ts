@@ -47,11 +47,12 @@ export async function POST(req: Request) {
     const data: CarouselData = JSON.parse(content);
     return NextResponse.json(data);
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating carousel:', error);
+    const errorMessage = error?.message || "Erro desconhecido";
     return NextResponse.json(
-      { error: "Erro ao gerar carrossel. Usando dados simulados.", fallback: MOCK_DATA },
-      { status: 200 } // Return 200 with fallback to allow testing
+      { error: `Erro na OpenAI: ${errorMessage}. Usando dados simulados.`, fallback: MOCK_DATA },
+      { status: 200 }
     );
   }
 }
