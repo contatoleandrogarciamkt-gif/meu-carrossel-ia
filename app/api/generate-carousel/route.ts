@@ -45,13 +45,39 @@ export async function POST(req: Request) {
     if (!content) throw new Error("Falha ao gerar conteúdo");
 
     const data: CarouselData = JSON.parse(content);
+
+    // AI Image Generation (Parallel)
+    try {
+      const slidesWithImages = await Promise.all(data.slides.map(async (slide) => {
+        if (!slide.imagePrompt) return slide;
+        
+        try {
+          const imageResponse = await openai.images.generate({
+            model: "dall-e-3",
+            prompt: slide.imagePrompt,
+            n: 1,
+            size: "1024x1024",
+            quality: "standard",
+          });
+          
+          return { ...slide, imageUrl: imageResponse.data[0].url };
+        } catch (imgErr) {
+          console.error(`Failed to generate image for slide ${slide.number}:`, imgErr);
+          return slide;
+        }
+      }));
+      
+      data.slides = slidesWithImages;
+    } catch (allImgErr) {
+      console.error("Error in parallel image generation:", allImgErr);
+    }
+
     return NextResponse.json(data);
 
   } catch (error: any) {
     console.error('Error generating carousel:', error);
-    const errorMessage = error?.message || "Erro desconhecido";
     return NextResponse.json(
-      { error: `Erro na OpenAI: ${errorMessage}. Usando dados simulados.`, fallback: MOCK_DATA },
+      { error: "Erro ao gerar carrossel. Por favor, tente novamente ou verifique sua chave da OpenAI.", fallback: MOCK_DATA },
       { status: 200 }
     );
   }
