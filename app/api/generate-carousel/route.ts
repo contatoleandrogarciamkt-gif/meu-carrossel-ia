@@ -60,7 +60,10 @@ export async function POST(req: Request) {
             quality: "standard",
           });
           
-          return { ...slide, imageUrl: imageResponse.data[0].url };
+          const imageUrl = imageResponse.data?.[0]?.url;
+          if (!imageUrl) throw new Error("No image URL returned from OpenAI");
+          
+          return { ...slide, imageUrl };
         } catch (imgErr) {
           console.error(`Failed to generate image for slide ${slide.number}:`, imgErr);
           return slide;
