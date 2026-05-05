@@ -114,7 +114,7 @@ export default function SlidePreview({ slide, design, format, id }: SlidePreview
             <div className={cn("text-[10px] uppercase tracking-[0.2em] font-bold mb-1", slide.imageUrl ? "text-white/70" : "opacity-50")}>
               {slide.type}
             </div>
-            <IconComponent size={24} className={slide.imageUrl ? 'text-white' : (design === 'premium' ? 'text-yellow-500' : '')} />
+            <IconComponent size={24} className={slide.imageUrl ? 'text-white' : 'text-slate-400'} />
           </div>
         )}
       </div>
