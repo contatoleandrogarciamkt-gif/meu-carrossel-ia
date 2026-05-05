@@ -26,7 +26,8 @@ FORMATO DE RESPOSTA (JSON):
       "headline": "TEXTO GRANDE",
       "supportText": "texto menor de apoio",
       "type": "gancho",
-      "iconName": "nome_do_icone_lucide" 
+      "iconName": "nome_do_icone_lucide",
+      "imagePrompt": "A very detailed English prompt for DALL-E 3. Style: Modern, clean, travel-related, 3D render or professional photography, soft lighting, using blue and yellow accents. No text in the image."
     }
   ],
   "caption": "Legenda curta com emojis e hashtags estratégicas",
